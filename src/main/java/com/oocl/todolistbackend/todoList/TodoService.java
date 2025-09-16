@@ -14,4 +14,15 @@ public class TodoService {
     public List<Todo> findAll() {
         return todoRepository.findAll();
     }
+
+    public Todo addTodo(TodoDto todoDto) {
+        Todo todo = new Todo();
+        todo.setText(todoDto.getText());
+        todo.setDone(false);
+        return todoRepository.addTodo(todo);
+    }
+
+    public void clearCompanies() {
+        todoRepository.clearAll();
+    }
 }

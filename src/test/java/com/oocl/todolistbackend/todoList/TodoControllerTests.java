@@ -1,5 +1,6 @@
 package com.oocl.todolistbackend.todoList;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,12 +21,30 @@ class TodoControllerTests {
     @Autowired
     private TodoService todoService;
 
+    @BeforeEach
+    void setUp() {
+        todoService.clearCompanies();
+    }
     @Test
-    void should_return_all_todo_items_when_find_empty_database() throws Exception {
+    void should_return_empty_array_when_find_empty_database() throws Exception {
         mockMvc.perform(get("/todos")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
+    }
+
+    @Test
+    void should_create_a_todo_item_post_given_a_valid_body() throws Exception {
+        String requestBody = """
+                {
+                    "text": "Java"
+                }
+                """;
+        mockMvc.perform(post("/todos").contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.text").value("Java"))
+                .andExpect(jsonPath("$.done").value(false));
     }
 
 }

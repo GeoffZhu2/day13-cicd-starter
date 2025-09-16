@@ -15,4 +15,14 @@ public class TodoRepositoryImpl implements TodoRepository {
     public List<Todo> findAll() {
         return todoJpaRepository.findAll();
     }
+
+    @Override
+    public Todo addTodo(Todo todo) {
+        return todoJpaRepository.save(todo);
+    }
+
+    @Override
+    public void clearAll() {
+        todoJpaRepository.deleteAll();
+    }
 }
