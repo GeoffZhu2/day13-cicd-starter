@@ -25,4 +25,9 @@ public class TodoRepositoryImpl implements TodoRepository {
     public void clearAll() {
         todoJpaRepository.deleteAll();
     }
+
+    @Override
+    public Todo findById(long id) {
+        return todoJpaRepository.findById(id).orElse(null);
+    }
 }

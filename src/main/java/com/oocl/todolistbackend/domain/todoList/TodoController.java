@@ -24,4 +24,9 @@ public class TodoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(todoService.addTodo(todoDto));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Todo> findById(@PathVariable long id) {
+        return ResponseEntity.ok(todoService.findById(id));
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.oocl.todolistbackend.todoList;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oocl.todolistbackend.domain.todoList.TodoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,9 +9,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -66,6 +68,29 @@ class TodoControllerTests {
         mockMvc.perform(post("/todos").contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody2))
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void should_return_todo_when_find_by_the_exist_id() throws Exception {
+        String requestBody = """
+                {
+                    "text": "Java"
+                }
+                """;
+        long id = createTodo(requestBody);
+
+        mockMvc.perform(get("/todos/{id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    private long createTodo(String requestBody) throws Exception {
+        ResultActions resultActions = mockMvc.perform(post("/todos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody));
+        MvcResult mvcResult = resultActions.andReturn();
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        return new ObjectMapper().readTree(contentAsString).get("id").asLong();
     }
 
 }

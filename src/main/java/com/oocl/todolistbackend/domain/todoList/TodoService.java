@@ -29,4 +29,12 @@ public class TodoService {
     public void clearCompanies() {
         todoRepository.clearAll();
     }
+
+    public Todo findById(long id) {
+        Todo todo = todoRepository.findById(id);
+        if (todo == null) {
+            throw new InvalidTodoException();
+        }
+        return todo;
+    }
 }
