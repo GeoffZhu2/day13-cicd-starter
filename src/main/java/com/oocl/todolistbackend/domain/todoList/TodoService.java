@@ -1,6 +1,7 @@
 package com.oocl.todolistbackend.domain.todoList;
 
 import com.oocl.todolistbackend.exception.InvalidTodoException;
+import com.oocl.todolistbackend.exception.MissingUpdateParameterException;
 import com.oocl.todolistbackend.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class TodoService {
             throw new NotFoundException();
         }
         if(!isValid(todoDto)) {
-            throw new InvalidTodoException();
+            throw new MissingUpdateParameterException();
         }
         todo.setText(todoDto.getText());
         todo.setDone(todoDto.getDone());

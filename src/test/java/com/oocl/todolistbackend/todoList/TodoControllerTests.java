@@ -121,6 +121,57 @@ class TodoControllerTests {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void should_throw_exception_when_update_by_the_not_exist_id() throws Exception {
+        String requestBody = """
+                {
+                    "text": "Java"
+                }
+                """;
+        createTodo(requestBody);
+
+        String updateDTO = """
+                {
+                    "id": 1,
+                    "text": "C++",
+                    "done": true
+                }
+                """;
+        mockMvc.perform(put("/todos/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateDTO))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void should_throw_exception_when_update_by_the_exist_id_but_miss_param() throws Exception {
+        String requestBody = """
+                {
+                    "text": "Java"
+                }
+                """;
+        long id = createTodo(requestBody);
+
+        String updateDTO1 = """
+                {
+                    "text": "C++"
+                }
+                """;
+        String updateDTO2 = """
+                {
+                    "done": false
+                }
+                """;
+        mockMvc.perform(put("/todos/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateDTO1))
+                .andExpect(status().isUnprocessableEntity());
+        mockMvc.perform(put("/todos/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateDTO2))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
     private long createTodo(String requestBody) throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/todos")
                 .contentType(MediaType.APPLICATION_JSON)
