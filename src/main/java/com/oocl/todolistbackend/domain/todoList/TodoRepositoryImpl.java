@@ -35,4 +35,9 @@ public class TodoRepositoryImpl implements TodoRepository {
     public Todo save(Todo todo) {
         return todoJpaRepository.save(todo);
     }
+
+    @Override
+    public void deleteById(long id) {
+        todoJpaRepository.deleteById(id);
+    }
 }

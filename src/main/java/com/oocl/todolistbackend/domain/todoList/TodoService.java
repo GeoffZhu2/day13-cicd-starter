@@ -62,4 +62,13 @@ public class TodoService {
         }
         return todoDto.getDone() != null;
     }
+
+    public Long deleteById(long id) {
+        Todo todo = todoRepository.findById(id);
+        if (todo == null) {
+            throw new NotFoundException();
+        }
+        todoRepository.deleteById(id);
+        return id;
+    }
 }

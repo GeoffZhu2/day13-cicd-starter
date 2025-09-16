@@ -172,6 +172,21 @@ class TodoControllerTests {
                 .andExpect(status().isUnprocessableEntity());
     }
 
+    @Test
+    void should_delete_todo_when_delete_by_the_exist_id() throws Exception {
+        String requestBody = """
+                {
+                    "text": "Java"
+                }
+                """;
+        long id = createTodo(requestBody);
+
+        mockMvc.perform(delete("/todos/{id}", id))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/todos/{id}", id))
+                .andExpect(status().isNotFound());
+    }
+
     private long createTodo(String requestBody) throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/todos")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -12,4 +12,6 @@ public interface TodoRepository {
     Todo findById(long id);
 
     Todo save(Todo todo);
+
+    void deleteById(long id);
 }
