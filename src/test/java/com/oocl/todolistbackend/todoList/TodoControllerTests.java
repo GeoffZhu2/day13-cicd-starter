@@ -1,5 +1,6 @@
 package com.oocl.todolistbackend.todoList;
 
+import com.oocl.todolistbackend.domain.todoList.TodoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,26 @@ class TodoControllerTests {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.text").value("Java"))
                 .andExpect(jsonPath("$.done").value(false));
+    }
+
+    @Test
+    void should_not_create_a_todo_item_post_given_a_invalid_body() throws Exception {
+        String requestBody1 = """
+                {
+                    "text": ""
+                }
+                """;
+        mockMvc.perform(post("/todos").contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody1))
+                .andExpect(status().isUnprocessableEntity());
+        String requestBody2 = """
+                {
+                    "done": false
+                }
+                """;
+        mockMvc.perform(post("/todos").contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody2))
+                .andExpect(status().isUnprocessableEntity());
     }
 
 }

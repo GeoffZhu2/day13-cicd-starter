@@ -1,5 +1,6 @@
-package com.oocl.todolistbackend.todoList;
+package com.oocl.todolistbackend.domain.todoList;
 
+import com.oocl.todolistbackend.exception.InvalidTodoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class TodoService {
     }
 
     public Todo addTodo(TodoDto todoDto) {
+        if(todoDto.getText() == null || todoDto.getText().trim().isEmpty()) {
+            throw new InvalidTodoException();
+        }
         Todo todo = new Todo();
         todo.setText(todoDto.getText());
         todo.setDone(false);

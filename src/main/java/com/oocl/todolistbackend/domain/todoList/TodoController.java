@@ -1,4 +1,4 @@
-package com.oocl.todolistbackend.todoList;
+package com.oocl.todolistbackend.domain.todoList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

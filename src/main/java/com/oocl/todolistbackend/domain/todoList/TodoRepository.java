@@ -1,4 +1,4 @@
-package com.oocl.todolistbackend.todoList;
+package com.oocl.todolistbackend.domain.todoList;
 
 import java.util.List;
 

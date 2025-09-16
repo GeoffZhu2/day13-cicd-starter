@@ -1,6 +1,5 @@
-package com.oocl.todolistbackend.todoList;
+package com.oocl.todolistbackend.domain.todoList;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
