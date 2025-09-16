@@ -187,6 +187,21 @@ class TodoControllerTests {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void should_throw_exception_when_delete_by_the_not_exist_id() throws Exception {
+        String requestBody = """
+                {
+                    "text": "Java"
+                }
+                """;
+        long id = createTodo(requestBody);
+
+        mockMvc.perform(delete("/todos/{id}", id))
+                .andExpect(status().isOk());
+        mockMvc.perform(delete("/todos/{id}", id))
+                .andExpect(status().isNotFound());
+    }
+
     private long createTodo(String requestBody) throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/todos")
                 .contentType(MediaType.APPLICATION_JSON)
