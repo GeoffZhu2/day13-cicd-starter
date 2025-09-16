@@ -1,6 +1,7 @@
 package com.oocl.todolistbackend.domain.todoList;
 
 import com.oocl.todolistbackend.exception.InvalidTodoException;
+import com.oocl.todolistbackend.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class TodoService {
     public Todo findById(long id) {
         Todo todo = todoRepository.findById(id);
         if (todo == null) {
-            throw new InvalidTodoException();
+            throw new NotFoundException();
         }
         return todo;
     }

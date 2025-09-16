@@ -12,7 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -28,6 +29,7 @@ class TodoControllerTests {
     void setUp() {
         todoService.clearCompanies();
     }
+
     @Test
     void should_return_empty_array_when_find_empty_database() throws Exception {
         mockMvc.perform(get("/todos")
@@ -81,6 +83,20 @@ class TodoControllerTests {
 
         mockMvc.perform(get("/todos/{id}", id))
                 .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void should_throw_exception_when_find_by_the_not_exist_id() throws Exception {
+        String requestBody = """
+                {
+                    "text": "Java"
+                }
+                """;
+        createTodo(requestBody);
+
+        mockMvc.perform(get("/todos/{id}", 99999))
+                .andExpect(status().isNotFound())
                 .andReturn();
     }
 
