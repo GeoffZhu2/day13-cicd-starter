@@ -1,6 +1,7 @@
 package com.oocl.todolistbackend.handler;
 
 import com.oocl.todolistbackend.exception.InvalidTodoException;
+import com.oocl.todolistbackend.exception.MissingUpdateParameterException;
 import com.oocl.todolistbackend.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,6 +19,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNotFoundException(Exception e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(MissingUpdateParameterException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public String handleMissingUpdateParameterException(Exception e) {
         return e.getMessage();
     }
 }

@@ -10,4 +10,6 @@ public interface TodoRepository {
     void clearAll();
 
     Todo findById(long id);
+
+    Todo save(Todo todo);
 }

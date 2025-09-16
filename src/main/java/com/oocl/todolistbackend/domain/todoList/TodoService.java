@@ -38,4 +38,27 @@ public class TodoService {
         }
         return todo;
     }
+
+    public Todo updateById(long id, TodoDto todoDto) {
+        Todo todo = todoRepository.findById(id);
+        if (todo == null) {
+            throw new NotFoundException();
+        }
+        if(!isValid(todoDto)) {
+            throw new InvalidTodoException();
+        }
+        todo.setText(todoDto.getText());
+        todo.setDone(todoDto.getDone());
+        return todoRepository.save(todo);
+    }
+
+    private boolean isValid(TodoDto todoDto) {
+        if (todoDto == null) {
+            return false;
+        }
+        if (todoDto.getText() == null || todoDto.getText().trim().isEmpty()) {
+            return false;
+        }
+        return todoDto.getDone() != null;
+    }
 }

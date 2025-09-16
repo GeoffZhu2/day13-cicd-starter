@@ -30,4 +30,9 @@ public class TodoRepositoryImpl implements TodoRepository {
     public Todo findById(long id) {
         return todoJpaRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Todo save(Todo todo) {
+        return todoJpaRepository.save(todo);
+    }
 }

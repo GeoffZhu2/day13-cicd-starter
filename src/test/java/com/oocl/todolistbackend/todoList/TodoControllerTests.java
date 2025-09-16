@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -98,6 +97,28 @@ class TodoControllerTests {
         mockMvc.perform(get("/todos/{id}", 99999))
                 .andExpect(status().isNotFound())
                 .andReturn();
+    }
+
+    @Test
+    void should_update_todo_when_update_by_the_exist_id() throws Exception {
+        String requestBody = """
+                {
+                    "text": "Java"
+                }
+                """;
+        long id = createTodo(requestBody);
+
+        String updateDTO = """
+                {
+                    "id": 1,
+                    "text": "C++",
+                    "done": true
+                }
+                """;
+        mockMvc.perform(put("/todos/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updateDTO))
+                .andExpect(status().isOk());
     }
 
     private long createTodo(String requestBody) throws Exception {
